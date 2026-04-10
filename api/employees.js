@@ -1,6 +1,5 @@
-import express, { request, response } from "express";
-import employees from "./employees";
-
+import express from "express";
+const employeeRouter = express.Router();
 import {
     createEmployee,
     deleteEmployee,
@@ -9,9 +8,6 @@ import {
     updateEmployee, 
     } from "#db/queries/employees";
 
-// TODO: this file!
-const employeeRouter = express.Router();
-
 employeeRouter.get("/", async (req, res) => {
     const employees = await getEmployees();
     res.send( employees );
@@ -19,17 +15,17 @@ employeeRouter.get("/", async (req, res) => {
 
 employeeRouter.post('/', async (req, res, next) => {
     if (!req.body) {
-        return response.status(400).send('Request must have a body.');
+        return res.status(400).send('Request must have a body.');
     }
 
     const { name, birthday, salary } = req.body;
     if (!name || !birthday || !salary) {
-        return response.status(400).send('Missing required field for request.');
+        return res.status(400).send('Missing required field for request.');
     }
 
     const newEmployee = await createEmployee({ name, birthday, salary });
 
-    response.status(201).send(newEmployee);
+    res.status(201).send(newEmployee);
 });
 
 employeeRouter.param('id', async (req, res, next, id) => {

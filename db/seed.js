@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import db from "#db/client";
 import { createEmployee } from "#db/queries/employees";
 
